@@ -1,10 +1,16 @@
 # Antarctic Peninsula greening from Landsat
-Revisiting trends computed by Roland et al. 2024 (https://doi.org/10.1038/s41561-024-01564-5) (hereafter R24)
 
-## Read NDVI tables
-Run Earth Engine code from https://github.com/OllyBartlett/Roland_And_Bartlett_et_al_2024/
+In a recent study, [Roland et al. (2024)](https://doi.org/10.1038/s41561-024-01564-5) (hereafter R24) showed that the Antarctic Peninsula is "greening", i.e. the area occupied by vegetation is growing. The authors drew this conclusion from the analysis of 35 years of Landsat images. More specifically, they computed a composite image of the maximum NDVI observed in March of every year since 1986. They used this annual time series to study the evolution of the area exceeding an NDVI threshold of 0.2.  However, we showed recently that greening trends derived from annual maximum NDVI can be overestimated in alpine regions because the number of available Landsat observations increases over time ([Bayle et al. 2024](https://doi.org/10.1111/ecog.07394)).
 
-then replace 
+The motivation is exaplained here: [https://labo.obs-mip.fr/multitemp/is-antarctica-greening/](https://labo.obs-mip.fr/multitemp/is-antarctica-greening/)
+
+The code of the analysis below is in [the notebook](antarcticGreening.ipynb).
+
+## Compute vegetation area
+
+1) Run Earth Engine code from https://github.com/OllyBartlett/Roland_And_Bartlett_et_al_2024/ to generate table ```GAP_maxNDVI_Area.csv``` (green area based on maximum composite of NDVI)
+
+2) then replace 
 ```javascript
 var composite = filtered.select('NDVI').reduce(ee.Reducer.max());
 ```
@@ -13,16 +19,20 @@ by
 var composite = filtered.select('NDVI').reduce(ee.Reducer.mean());
 ```
 
-Generate two tables ```GAP_maxNDVI_Area.csv``` and ```GAP_meanNDVI_Area.csv```
+Generate table ```GAP_meanNDVI_Area.csv```  (green area based on maximum composite of NDVI)
 
 
 ## Total area analysis
 
+
+    
+![png](output_6_0.png)
+    
+
+
 Attempt to reproduce R24 Supp. Table 5.2, where MK's $z$ statistics is called ${\\tau}$ 
 
 
-<style type="text/css">
-</style>
 <table id="T_da8be">
   <caption>
     Mann-Kendall test
@@ -60,9 +70,6 @@ treated as zeroes, using a 1 year time interval"
 
 
 
-
-<style type="text/css">
-</style>
 <table id="T_56dce">
   <caption>
     Mann-Kendall test
@@ -97,8 +104,6 @@ treated as zeroes, using a 1 year time interval"
 Compute slope of the least-square regression line for both methods (not reported by R42)
 
 
-<style type="text/css">
-</style>
 <table id="T_7dd5d">
   <caption>
     Least-square trend in km2/decade
@@ -127,10 +132,6 @@ Area changes by period (reproduce Tab. 5.1 in R24)
 
 
 
-
-
-<style type="text/css">
-</style>
 <table id="T_d2ab1">
   <caption>
     Area change in km2/decade 
